@@ -9,8 +9,7 @@ app = Flask(__name__)
 model = tf.keras.models.load_model("models/model.keras")
 scaler = joblib.load("models/scaler.keras")
 
-@app.route("/", methods=["GET", "POST"])
-# Hàm dự đoán khoảng giá
+# Hàm dự đoán khoảng giá (TÁCH RIÊNG)
 def predict_price_range(input_data, model, scaler, num_samples=10, noise_std=0.01):
     """
     Dự đoán giá nhà nhiều lần với nhiễu nhỏ để tính khoảng giá.
@@ -26,6 +25,7 @@ def predict_price_range(input_data, model, scaler, num_samples=10, noise_std=0.0
 
     return round(min(predictions), 2), round(max(predictions), 2)
 
+# Flask route
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -43,6 +43,14 @@ def index():
 
             # Dự đoán khoảng giá
             price_min, price_max = predict_price_range(input_data, model, scaler)
+
+            # Định dạng giá tiền x.xxx.xxx VNĐ
+            price_min *= 1000
+            price_max *= 1000
+            
+
+            price_min = "{:,.0f}".format(price_min).replace(",", ".")
+            price_max = "{:,.0f}".format(price_max).replace(",", ".")
 
             return render_template("index.html", price_min=price_min, price_max=price_max)
 
