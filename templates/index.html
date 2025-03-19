@@ -13,7 +13,7 @@
     <div class="container">
         <h1>DỰ ĐOÁN GIÁ NHÀ</h1>
         <form method="post">
-            <label for="year_sold">Năm xây dựng:</label>
+            <label for="year_sold">Năm bán nhà:</label>
             <input type="number" id="year_sold" name="year_sold" required>
 
             <label for="house_age">Tuổi nhà:</label>
@@ -35,7 +35,7 @@
         </form>
 
         {% if price_min and price_max %}
-            <p class="result">Giá nhà dự đoán: {{ price_min }} VNĐ - {{ price_max }} VNĐ</p>
+            <p class="result">Giá nhà dự đoán: {{ price_min }} USD - {{ price_max }} USD</p>
         {% elif error %}
             <p class="error">⚠️ {{ error }}</p>
         {% endif %}
